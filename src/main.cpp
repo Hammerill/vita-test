@@ -16,48 +16,48 @@ SDL_Rect fillRect = {
 
 int main()
 {
-    SDL_Init(SDL_INIT_VIDEO);
+  SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_Window* window = SDL_CreateWindow("TEST", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  SDL_Window* window = SDL_CreateWindow("Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+  SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    SceCtrlData ctrl;
+  SceCtrlData ctrl;
 
-    bool isRunning = true;
-    while (isRunning)
+  bool isRunning = true;
+  while (isRunning)
+  {
+    sceCtrlPeekBufferPositive(0, &ctrl, 1);
+
+    if (ctrl.buttons & SCE_CTRL_UP && fillRect.y > 0)
     {
-		    sceCtrlPeekBufferPositive(0, &ctrl, 1);
-
-        if (ctrl.buttons & SCE_CTRL_UP && fillRect.y > 0)
-        {
-            fillRect.y -= 1;
-        }
-        if (ctrl.buttons & SCE_CTRL_DOWN && fillRect.y < SCREEN_HEIGHT - fillRect.h)
-        {
-            fillRect.y += 1;
-        }
-        if (ctrl.buttons & SCE_CTRL_RIGHT && fillRect.x < SCREEN_WIDTH - fillRect.w)
-        {
-            fillRect.x += 1;
-        }
-        if (ctrl.buttons & SCE_CTRL_LEFT && fillRect.x > 0)
-        {
-            fillRect.x -= 1;
-        }
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
-        SDL_RenderClear(renderer);
-
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderFillRect(renderer, &fillRect);
-
-        SDL_RenderPresent(renderer);
+      fillRect.y -= 1;
+    }
+    if (ctrl.buttons & SCE_CTRL_DOWN && fillRect.y < SCREEN_HEIGHT - fillRect.h)
+    {
+      fillRect.y += 1;
+    }
+    if (ctrl.buttons & SCE_CTRL_RIGHT && fillRect.x < SCREEN_WIDTH - fillRect.w)
+    {
+      fillRect.x += 1;
+    }
+    if (ctrl.buttons & SCE_CTRL_LEFT && fillRect.x > 0)
+    {
+      fillRect.x -= 1;
     }
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+    SDL_RenderClear(renderer);
 
-    sceKernelExitProcess(0);
-    return 0;
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderFillRect(renderer, &fillRect);
+
+    SDL_RenderPresent(renderer);
+  }
+
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+  SDL_Quit();
+
+  sceKernelExitProcess(0);
+  return 0;
 }
