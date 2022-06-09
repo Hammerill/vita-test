@@ -8,7 +8,7 @@ enum {
   SCREEN_HEIGHT = 544
 };
 
-SDL_Rect fillRect = { 
+SDL_Rect rect = { 
   0, 0, 
   SCREEN_HEIGHT / 2, 
   SCREEN_HEIGHT / 2 
@@ -51,35 +51,35 @@ int main()
 
     if (ctrl.buttons & SCE_CTRL_UP)
     {
-      fillRect.y = addPos(fillRect.y, -moveSpeed, fillRect.h, SCREEN_HEIGHT);
+      rect.y = addPos(rect.y, -moveSpeed, rect.h, SCREEN_HEIGHT);
     }
     if (ctrl.buttons & SCE_CTRL_DOWN)
     {
-      fillRect.y = addPos(fillRect.y, moveSpeed, fillRect.h, SCREEN_HEIGHT);
+      rect.y = addPos(rect.y, moveSpeed, rect.h, SCREEN_HEIGHT);
     }
     if (ctrl.buttons & SCE_CTRL_RIGHT)
     {
-      fillRect.x = addPos(fillRect.x, moveSpeed, fillRect.w, SCREEN_WIDTH);
+      rect.x = addPos(rect.x, moveSpeed, rect.w, SCREEN_WIDTH);
     }
     if (ctrl.buttons & SCE_CTRL_LEFT)
     {
-      fillRect.x = addPos(fillRect.x, -moveSpeed, fillRect.w, SCREEN_WIDTH);
+      rect.x = addPos(rect.x, -moveSpeed, rect.w, SCREEN_WIDTH);
     }
 
     if (ctrl.lx > stickCenter + stickDeadZone || ctrl.lx < stickCenter - stickDeadZone)
     {
-      fillRect.x = addPos(fillRect.x, (ctrl.lx - stickCenter) / (stickCenter/moveSpeed), fillRect.w, SCREEN_WIDTH);
+      rect.x = addPos(rect.x, (ctrl.lx - stickCenter) / (stickCenter/moveSpeed), rect.w, SCREEN_WIDTH);
     }
     if (ctrl.ly > stickCenter + stickDeadZone || ctrl.ly < stickCenter - stickDeadZone)
     {
-      fillRect.y = addPos(fillRect.y, (ctrl.ly - stickCenter) / (stickCenter/moveSpeed), fillRect.h, SCREEN_HEIGHT);
+      rect.y = addPos(rect.y, (ctrl.ly - stickCenter) / (stickCenter/moveSpeed), rect.h, SCREEN_HEIGHT);
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderFillRect(renderer, &fillRect);
+    SDL_RenderFillRect(renderer, &rect);
 
     SDL_RenderPresent(renderer);
   }
