@@ -19,7 +19,7 @@ int main()
   SDL_Init(SDL_INIT_VIDEO);
 
   SDL_Window* window = SDL_CreateWindow("Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-  SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
   SceCtrlData ctrl;
 
@@ -30,19 +30,19 @@ int main()
 
     if (ctrl.buttons & SCE_CTRL_UP && fillRect.y > 0)
     {
-      fillRect.y -= 1;
+      fillRect.y -= 10;
     }
     if (ctrl.buttons & SCE_CTRL_DOWN && fillRect.y < SCREEN_HEIGHT - fillRect.h)
     {
-      fillRect.y += 1;
+      fillRect.y += 10;
     }
     if (ctrl.buttons & SCE_CTRL_RIGHT && fillRect.x < SCREEN_WIDTH - fillRect.w)
     {
-      fillRect.x += 1;
+      fillRect.x += 10;
     }
     if (ctrl.buttons & SCE_CTRL_LEFT && fillRect.x > 0)
     {
-      fillRect.x -= 1;
+      fillRect.x -= 10;
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
