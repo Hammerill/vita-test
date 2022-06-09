@@ -77,6 +77,7 @@ int main()
   const int moveSpeed = 10;
   const int stickDeadZone = 10;
   const int stickCenter = 128;
+  const int stickMax = stickCenter;
 
   bool isRunning = true;
   while (isRunning)
@@ -103,11 +104,11 @@ int main()
 
     if (ctrl.lx > stickCenter + stickDeadZone || ctrl.lx < stickCenter - stickDeadZone)
     {
-      addPos(&rect.x, (ctrl.lx - stickCenter) / (stickCenter/moveSpeed), rect.w, SCREEN_WIDTH);
+      addPos(&rect.x, (ctrl.lx - stickCenter) / (stickMax/moveSpeed), rect.w, SCREEN_WIDTH);
     }
     if (ctrl.ly > stickCenter + stickDeadZone || ctrl.ly < stickCenter - stickDeadZone)
     {
-      addPos(&rect.y, (ctrl.ly - stickCenter) / (stickCenter/moveSpeed), rect.h, SCREEN_HEIGHT);
+      addPos(&rect.y, (ctrl.ly - stickCenter) / (stickMax/moveSpeed), rect.h, SCREEN_HEIGHT);
     }
 
     if (touch[0].reportNum > 0)
