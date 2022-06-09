@@ -42,6 +42,7 @@ int main()
 
   const int moveSpeed = 10;
   const int stickDeadZone = 10;
+  const int stickCenter = 128;
 
   bool isRunning = true;
   while (isRunning)
@@ -65,13 +66,13 @@ int main()
       fillRect.x = addPos(fillRect.x, -moveSpeed, fillRect.w, SCREEN_WIDTH);
     }
 
-    if (ctrl.lx > 128 + stickDeadZone || ctrl.lx < 128 - stickDeadZone)
+    if (ctrl.lx > stickCenter + stickDeadZone || ctrl.lx < stickCenter - stickDeadZone)
     {
-      fillRect.x = addPos(fillRect.x, (ctrl.lx - 128) / 10, fillRect.w, SCREEN_WIDTH);
+      fillRect.x = addPos(fillRect.x, (ctrl.lx - stickCenter) / (stickCenter/moveSpeed), fillRect.w, SCREEN_WIDTH);
     }
-    if (ctrl.ly > 128 + stickDeadZone || ctrl.ly < 128 - stickDeadZone)
+    if (ctrl.ly > stickCenter + stickDeadZone || ctrl.ly < stickCenter - stickDeadZone)
     {
-      fillRect.y = addPos(fillRect.y, (ctrl.ly - 128) / 10, fillRect.h, SCREEN_HEIGHT);
+      fillRect.y = addPos(fillRect.y, (ctrl.ly - stickCenter) / (stickCenter/moveSpeed), fillRect.h, SCREEN_HEIGHT);
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
