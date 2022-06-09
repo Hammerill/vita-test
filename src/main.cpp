@@ -2,6 +2,7 @@
 
 #include <psp2/kernel/processmgr.h>
 #include <psp2/ctrl.h>
+#include <psp2/touch.h>
 
 enum {
   SCREEN_WIDTH  = 960,
@@ -30,6 +31,35 @@ int addPos(int pos, int add, int size, int screenSize)
   }
 }
 
+void setPos(int* x, int* y, int newX, int newY, SDL_Rect rect, int screenWidth, int screenHeight)
+{
+  if (newX < 0)
+  {
+    *x = 0;
+  }
+  else if (newX + rect.w > screenWidth)
+  {
+    *x = screenWidth - rect.w;
+  }
+  else 
+  {
+    *x = newX;
+  }
+
+  if (newY < 0)
+  {
+    *y = 0;
+  }
+  else if (newY + rect.h > screenHeight)
+  {
+    *y = screenHeight - rect.h;
+  }
+  else 
+  {
+    *y = newY;
+  }
+}
+
 int main()
 {
   SDL_Init(SDL_INIT_VIDEO);
@@ -40,6 +70,10 @@ int main()
   sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
   SceCtrlData ctrl;
 
+  sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
+  sceTouchEnableTouchForce(SCE_TOUCH_PORT_FRONT);
+  SceTouchData touch[SCE_TOUCH_PORT_MAX_NUM];
+
   const int moveSpeed = 10;
   const int stickDeadZone = 10;
   const int stickCenter = 128;
@@ -48,6 +82,7 @@ int main()
   while (isRunning)
   {
     sceCtrlPeekBufferPositive(0, &ctrl, 1);
+    sceTouchPeek(0, &touch[0], 1);
 
     if (ctrl.buttons & SCE_CTRL_UP)
     {
@@ -74,6 +109,12 @@ int main()
     {
       rect.y = addPos(rect.y, (ctrl.ly - stickCenter) / (stickCenter/moveSpeed), rect.h, SCREEN_HEIGHT);
     }
+
+    if (touch[0].reportNum > 0)
+    {
+      setPos(&rect.x, &rect.y, (touch[0].report[0].x/2) - (rect.w / 2), (touch[0].report[0].y/2) - (rect.h/2), rect, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
+    
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
     SDL_RenderClear(renderer);
