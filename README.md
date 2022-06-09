@@ -1,8 +1,7 @@
-# vita-test
+# Vita Test
 Testing VITASDK with SDL2 graphics.
 
-Build and run
-===========================
+## Build and run
 1. Install [VITASDK](https://vitasdk.org/).
 2. Clone repo `git clone https://github.com/Hammerill/vita-test && cd vita-test`.
 3. Build `cmake . && make` (if it throws an error, try typing this again).
