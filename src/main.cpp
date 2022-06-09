@@ -112,9 +112,8 @@ int main()
 
     if (touch[0].reportNum > 0)
     {
-      setPos(&rect.x, &rect.y, (touch[0].report[0].x/2) - (rect.w / 2), (touch[0].report[0].y/2) - (rect.h/2), rect, SCREEN_WIDTH, SCREEN_HEIGHT);
+      setPos(&rect.x, &rect.y, (touch[0].report[0].x/2) - (rect.w/2), (touch[0].report[0].y/2) - (rect.h/2), rect, SCREEN_WIDTH, SCREEN_HEIGHT);
     }
-    
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
     SDL_RenderClear(renderer);
