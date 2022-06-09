@@ -14,35 +14,64 @@ SDL_Rect fillRect = {
   SCREEN_HEIGHT / 2 
 };
 
+int addPos(int pos, int add, int size, int screenSize)
+{
+  if (pos + add < 0)
+  {
+    return 0;
+  }
+  else if (pos + add + size > screenSize)
+  {
+    return screenSize - size;
+  }
+  else
+  {
+    return pos + add;
+  }
+}
+
 int main()
 {
   SDL_Init(SDL_INIT_VIDEO);
 
   SDL_Window* window = SDL_CreateWindow("Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
+  
+	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
   SceCtrlData ctrl;
+
+  const int moveSpeed = 10;
+  const int stickDeadZone = 10;
 
   bool isRunning = true;
   while (isRunning)
   {
     sceCtrlPeekBufferPositive(0, &ctrl, 1);
 
-    if (ctrl.buttons & SCE_CTRL_UP && fillRect.y > 0)
+    if (ctrl.buttons & SCE_CTRL_UP)
     {
-      fillRect.y -= 10;
+      fillRect.y = addPos(fillRect.y, -moveSpeed, fillRect.h, SCREEN_HEIGHT);
     }
-    if (ctrl.buttons & SCE_CTRL_DOWN && fillRect.y < SCREEN_HEIGHT - fillRect.h)
+    if (ctrl.buttons & SCE_CTRL_DOWN)
     {
-      fillRect.y += 10;
+      fillRect.y = addPos(fillRect.y, moveSpeed, fillRect.h, SCREEN_HEIGHT);
     }
-    if (ctrl.buttons & SCE_CTRL_RIGHT && fillRect.x < SCREEN_WIDTH - fillRect.w)
+    if (ctrl.buttons & SCE_CTRL_RIGHT)
     {
-      fillRect.x += 10;
+      fillRect.x = addPos(fillRect.x, moveSpeed, fillRect.w, SCREEN_WIDTH);
     }
-    if (ctrl.buttons & SCE_CTRL_LEFT && fillRect.x > 0)
+    if (ctrl.buttons & SCE_CTRL_LEFT)
     {
-      fillRect.x -= 10;
+      fillRect.x = addPos(fillRect.x, -moveSpeed, fillRect.w, SCREEN_WIDTH);
+    }
+
+    if (ctrl.lx > 128 + stickDeadZone || ctrl.lx < 128 - stickDeadZone)
+    {
+      fillRect.x = addPos(fillRect.x, (ctrl.lx - 128) / 10, fillRect.w, SCREEN_WIDTH);
+    }
+    if (ctrl.ly > 128 + stickDeadZone || ctrl.ly < 128 - stickDeadZone)
+    {
+      fillRect.y = addPos(fillRect.y, (ctrl.ly - 128) / 10, fillRect.h, SCREEN_HEIGHT);
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
