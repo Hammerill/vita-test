@@ -15,19 +15,19 @@ SDL_Rect rect = {
   SCREEN_HEIGHT / 2 
 };
 
-int addPos(int pos, int add, int size, int screenSize)
+void addPos(int* pos, int add, int size, int screenSize)
 {
-  if (pos + add < 0)
+  if (*pos + add < 0)
   {
-    return 0;
+    *pos = 0;
   }
-  else if (pos + add + size > screenSize)
+  else if (*pos + add + size > screenSize)
   {
-    return screenSize - size;
+    *pos = screenSize - size;
   }
   else
   {
-    return pos + add;
+    *pos = *pos + add;
   }
 }
 
@@ -86,28 +86,28 @@ int main()
 
     if (ctrl.buttons & SCE_CTRL_UP)
     {
-      rect.y = addPos(rect.y, -moveSpeed, rect.h, SCREEN_HEIGHT);
+      addPos(&rect.y, -moveSpeed, rect.h, SCREEN_HEIGHT);
     }
     if (ctrl.buttons & SCE_CTRL_DOWN)
     {
-      rect.y = addPos(rect.y, moveSpeed, rect.h, SCREEN_HEIGHT);
+      addPos(&rect.y, moveSpeed, rect.h, SCREEN_HEIGHT);
     }
     if (ctrl.buttons & SCE_CTRL_RIGHT)
     {
-      rect.x = addPos(rect.x, moveSpeed, rect.w, SCREEN_WIDTH);
+      addPos(&rect.x, moveSpeed, rect.w, SCREEN_WIDTH);
     }
     if (ctrl.buttons & SCE_CTRL_LEFT)
     {
-      rect.x = addPos(rect.x, -moveSpeed, rect.w, SCREEN_WIDTH);
+      addPos(&rect.x, -moveSpeed, rect.w, SCREEN_WIDTH);
     }
 
     if (ctrl.lx > stickCenter + stickDeadZone || ctrl.lx < stickCenter - stickDeadZone)
     {
-      rect.x = addPos(rect.x, (ctrl.lx - stickCenter) / (stickCenter/moveSpeed), rect.w, SCREEN_WIDTH);
+      addPos(&rect.x, (ctrl.lx - stickCenter) / (stickCenter/moveSpeed), rect.w, SCREEN_WIDTH);
     }
     if (ctrl.ly > stickCenter + stickDeadZone || ctrl.ly < stickCenter - stickDeadZone)
     {
-      rect.y = addPos(rect.y, (ctrl.ly - stickCenter) / (stickCenter/moveSpeed), rect.h, SCREEN_HEIGHT);
+      addPos(&rect.y, (ctrl.ly - stickCenter) / (stickCenter/moveSpeed), rect.h, SCREEN_HEIGHT);
     }
 
     if (touch[0].reportNum > 0)
