@@ -37,7 +37,7 @@ int main()
   SDL_Window* window = SDL_CreateWindow("Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   
-	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
+  sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
   SceCtrlData ctrl;
 
   const int moveSpeed = 10;
